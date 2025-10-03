@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.gov.hmcts.reform.dev.enums.TaskStatus;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,18 +18,9 @@ import java.time.LocalDateTime;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(nullable = false, length = 200)
+    private Integer id;
     private String title;
-
-    @Column(length = 2000)
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private TaskStatus status;
-
-    private LocalDateTime dueDate;
-
+    private String status;
+    private LocalDate dueDate;
 }

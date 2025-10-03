@@ -11,6 +11,7 @@ import java.util.Optional;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
+@CrossOrigin(origins = "https://localhost:3100", allowCredentials = "true")
 public class TaskController {
 
     private final TaskRepository taskRepository;
@@ -32,6 +33,7 @@ public class TaskController {
 
     @PostMapping(value = "/task", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        task.setId(null);
         Task savedTask = taskRepository.save(task);
         return ok(savedTask);
     }
@@ -40,10 +42,10 @@ public class TaskController {
     public ResponseEntity<Task> updateTask(@PathVariable Integer id, @RequestBody Task task) {
         return taskRepository.findById(id)
             .map(existing -> {
-                existing.setTitle(task.getTitle());
-                existing.setDescription(task.getDescription());
-                existing.setStatus(task.getStatus());
-                existing.setDueDate(task.getDueDate());
+                existing.setTitle(task.getTitle() != null ? task.getTitle() : existing.getTitle());
+                existing.setDescription(task.getDescription() != null ? task.getDescription() : existing.getDescription());
+                existing.setStatus(task.getStatus() != null ? task.getStatus() : existing.getStatus());
+                existing.setDueDate(task.getDueDate() != null ? task.getDueDate() : existing.getDueDate());
                 Task updated = taskRepository.save(existing);
                 return ResponseEntity.ok(updated);
             })
